@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block starts %}
+<div class="container card-body"
+    style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+    <form class="col-6 mx-auto card p-4" method="post">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {%csrf_token%}
+
+        <div class="mb-sm-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" id="username" required>
+        </div>
+
+        <div class="mb-sm-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+
+        <div class="mb-sm-3">
+            <label for="firstname" class="form-label">First Name</label>
+            <input type="text" name="firstname" class="form-control" id="firstname" aria-describedby="firstname"
+                required>
+        </div>
+
+        <div class="mb-sm-3">
+            <label for="lastname" class="form-label">Last Name</label>
+            <input type="text" name="lastname" class="form-control" id="lastname" aria-describedby="lastname" required>
+        </div>
+
+        <div class="mb-sm-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
+        </div>
+
+        <div class="mb-sm-3">
+            <label for="confirmpassword" class="form-label">Confirm Password</label>
+            <input type="password" name="confirmpassword" class="form-control" id="confirmpassword" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+        <p class="mt-5"> Already have an account? <a href="{% url 'tasks:login' %}" class="btn btn-primary ms-3">Login</a></p>
+
+    </form>
+</div>
+{% endblock %}
