@@ -1,7 +1,43 @@
 {% include 'base.html' %}
 
 {% block starts %}
+<div class="container card-body">
+    <div class="container col-8 mx-auto">
+        <div class="form-group mt-5">
+            <form action="" class="form-control mb-3" method="post">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert" $enable-transitions>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% csrf_token %}
+                <label for="task" class="form-label mb-sm-3">Enter the task</label>
+                <input type="text" placeholder="Enter task here" name="task" id="task" class="form-control">
+                <button type="submit" class="btn btn-primary mt-3">Add Task</button></a>
+            </form>
+        </div>
 
-<h1>{{User.get_username}}</h1>
+        <div class="container col-8 mx-auto tasks p-5">
+            <ol class="container flex">
+                {% for task in tasks %}
+                <li class="m-3">{{ task }}
+                    {% if task.completed == False %}
+                    <span class="continer m-5">
+                        <a href="{% url 'tasks:update-task' id=task.id %}" class="btn btn-success">Done</a>
+                        {% else %}
+                        <a href="{% url 'tasks:update-task' id=task.id %}" class="btn btn-primary">Undone</a>
+                        {% endif %}
+                        <a href="{% url 'tasks:delete-task' id=task.id %}" class="btn btn-danger">Delete</a>
+                    </span>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}

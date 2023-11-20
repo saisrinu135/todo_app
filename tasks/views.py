@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from .models import tasks_model
 
 # Create your views here.
 
@@ -64,4 +65,23 @@ def logout_view(request):
 
 @login_required(login_url='/login')
 def home(request):
-    return render(request, 'home.html')
+    tasks = tasks_model.objects.filter(user = request.user)
+    if request.method == 'POST':
+        user = request.user
+        task = request.POST.get('task')
+        userdata = tasks_model.objects.create(user = user, task = task)
+        userdata.save()
+        messages.success(request, message='Task Added')
+    return render(request, 'home.html',context={'title':'Todo - Home','tasks':tasks})
+
+
+def update_task(request, id):
+    task = tasks_model.objects.get(id = id)
+    task.completed = not task.completed
+    task.save()
+    return redirect('/home')
+
+def delete_task(request, id):
+    task = tasks_model.objects.get(id = id)
+    task.delete()
+    return redirect('/home')
