@@ -26,11 +26,11 @@
                 <li class="m-3">{{ task }}
                     {% if task.completed == False %}
                     <span class="continer m-5">
-                        <a href="{% url 'tasks:update-task' id=task.id %}" class="btn btn-success">Done</a>
+                        <a href="{% url 'tasks:update-task' id=task.id %}" class="btn btn-success m-3">Done</a>
                         {% else %}
-                        <a href="{% url 'tasks:update-task' id=task.id %}" class="btn btn-primary">Undone</a>
+                        <a href="{% url 'tasks:update-task' id=task.id %}" class="btn btn-primary m-3">Undone</a>
                         {% endif %}
-                        <a href="{% url 'tasks:delete-task' id=task.id %}" class="btn btn-danger">Delete</a>
+                        <a href="{% url 'tasks:delete-task' id=task.id %}" class="btn btn-danger m-3">Delete</a>
                     </span>
                 </li>
                 {% endfor %}
