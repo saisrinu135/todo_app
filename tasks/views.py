@@ -74,13 +74,14 @@ def home(request):
         messages.success(request, message='Task Added')
     return render(request, 'home.html',context={'title':'Todo - Home','tasks':tasks})
 
-
+@login_required(login_url='/login')
 def update_task(request, id):
     task = tasks_model.objects.get(id = id)
     task.completed = not task.completed
     task.save()
     return redirect('/home')
 
+@login_required(login_url='/login')
 def delete_task(request, id):
     task = tasks_model.objects.get(id = id)
     task.delete()
