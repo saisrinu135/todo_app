@@ -19,10 +19,15 @@ def register_view(request):
         if User.objects.filter(username=username).exists():
             messages.error(request, message='Username Already Used', extra_tags='danger')
             return redirect('/register')
+        
         elif User.objects.filter(email=email).exists():
             messages.error(request, message='Email already Used',extra_tags='danger')
+            return redirect('/register')
+
         elif password != confirmpassword:
             messages.error(request, message='Password does not match',extra_tags='danger')
+            return redirect('/register')
+        
         else:
             user = User.objects.create (
                 username = username,
@@ -42,18 +47,18 @@ def login_view(request):
         password = request.POST.get('password')
 
         user = User.objects.filter(username = username)
-        if not user.exists():
-            messages.error(request, message= 'Invalid Username', extra_tags='danger')
-            return redirect('/login')
-        
-        user = authenticate(username = username, password = password)
-        if user is None:
-            messages.error(request, message='Invalid Password')
-            return redirect('/login')
+        if user.exists():
+            user = authenticate(username = username, password = password)
+            if user is None:
+                messages.error(request, message='Invalid Password',extra_tags='danger')
+                return redirect('/login')
+            else:
+                login(request,user)
+                messages.success(request, message='Login Successfull')
+                return redirect('/home')
         else:
-            login(request,user)
-            messages.success(request, message='Login Successfull')
-            return redirect('/home')
+            messages.error(request, message= 'Invalid User', extra_tags='danger')
+            return redirect('/login')
 
     return render(request, 'login.html',context={'title':'Login'})
 
