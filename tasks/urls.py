@@ -9,4 +9,8 @@ urlpatterns = [
     path('home/', home,name='home'),
     path('update-task/<int:id>/', update_task, name='update-task'),
     path('delete-task/<int:id>/', delete_task, name='delete-task'),
+    path('forgetpassword/',forget_password, name='forgetpassword'),
+    path('verify/',verify, name='verify'),
+    path('password-change/',password_change, name='password-change'),
+
 ]

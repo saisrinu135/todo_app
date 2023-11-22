@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block starts %}
+
+<div class="container col-4 mx-auto mt-lg-5">
+    <form action="" method="post" class="form-control p-5">
+        {% csrf_token %}
+        <div class="form-group mb-5">
+            <label for="otp" class="form-label">Enter OTP here</label>
+            <input type="text" name="otp" id="otp" class="form-control" required placeholder="Enter One Time Password">
+        </div>
+        <div class="form-group mt-5">
+            <input type="submit" value="Proceed" class="form-control btn btn-primary">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

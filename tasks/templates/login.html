@@ -21,7 +21,8 @@
             <input type="password" name="password" required class="form-control" id="exampleInputPassword1">
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
-        <p class="mt-5">Don't have an account? <a href="{% url 'tasks:register' %}" class="btn btn-primary ms-3">Register</a>
+        <a href="{% url 'tasks:forgetpassword' %}" class="m-3">Forget password?</a>
+        <p class="m-3">Don't have an account? <a href="{% url 'tasks:register' %}" class="btn btn-primary ms-3">Register</a>
         </p>
     </form>
 </div>
