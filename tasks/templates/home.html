@@ -2,16 +2,16 @@
 
 {% block starts %}
 <div class="container card-body">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert" style="position: absolute;">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
     <div class="container col-8 mx-auto">
         <div class="form-group mt-5">
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-            {% endif %}
             <form action="" class="form-control mb-3 p-5" method="post">
                 {% csrf_token %}
                 <label for="task" class="form-label mb-sm-3">Enter the task</label>

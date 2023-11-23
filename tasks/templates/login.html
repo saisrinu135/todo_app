@@ -2,16 +2,15 @@
 {% block starts %}
 <div class="container card-body"
     style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
     <form class="col-6 mx-auto card p-5" method="post">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
-        {%csrf_token%}
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" name="username" required class="form-control" id="username">
@@ -22,7 +21,8 @@
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
         <a href="{% url 'tasks:forgetpassword' %}" class="m-3">Forget password?</a>
-        <p class="m-3">Don't have an account? <a href="{% url 'tasks:register' %}" class="btn btn-primary ms-3">Register</a>
+        <p class="m-3">Don't have an account? <a href="{% url 'tasks:register' %}"
+                class="btn btn-primary ms-3">Register</a>
         </p>
     </form>
 </div>
