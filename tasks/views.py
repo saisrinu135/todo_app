@@ -7,6 +7,8 @@ from .models import tasks_model
 from django.conf import settings
 from django.core.mail import send_mail
 import random
+from uuid import uuid4
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -79,7 +81,6 @@ def home(request):
         task = request.POST.get('task')
         userdata = tasks_model.objects.create(user = user, task = task)
         userdata.save()
-        messages.success(request, message='Task Added')
     return render(request, 'home.html',context={'title':'Todo - Home','tasks':tasks})
 
 @login_required(login_url='/login')
@@ -97,6 +98,7 @@ def delete_task(request, id):
 
 username = None
 generated_otp = None
+generated_token = None
 def forget_password(request):
     if request.method == 'POST':
         if User.objects.filter(username = request.POST.get('username')).exists():
@@ -109,36 +111,44 @@ def forget_password(request):
                 subject='Password Reset',
                 message=f'''Your One Time Password to reset the your password {generated_otp}. Don't share it with any one.''', from_email=settings.EMAIL_HOST_USER, recipient_list=[user.email]
                 )
-            return redirect('/verify')
+            global generated_token
+            generated_token = uuid4()
+            return redirect(f'/verify/{str(generated_token)}')
         else:
             messages.error(request, message='Invalid User')
             return redirect('/forgetpassword')
     return render(request,'forgetpassword.html',context={'title':'Forget Password'})
 
-def verify(request):
-    if request.method == 'POST':
-        user_otp = request.POST.get('otp')
-        print(user_otp)
-        if int(generated_otp) == int(user_otp):
-            print(generated_otp)
-            messages.info(request, message='OTP Sent to your registered mail')
-            return redirect('/password-change')
-        else:
-            messages.error(request, message='OTP did not match',extra_tags='danger')
-            return redirect('/verify')
-    return render(request, 'verify.html',context={'title':'Verify OTP'})
+
+def verify(request, token):
+    if str(generated_token) == token:
+        if request.method == 'POST':
+            user_otp = request.POST.get('otp')
+            print(user_otp)
+            if int(generated_otp) == int(user_otp):
+                print(generated_otp)
+                messages.info(request, message='OTP Sent to your registered mail')
+                return redirect(f'/password-change/{generated_token}')
+            else:
+                messages.error(request, message='OTP did not match',extra_tags='danger')
+                return HttpResponseRedirect(request.path_info)
+        return render(request, 'verify.html',context={'title':'Verify OTP'})
+    return redirect('/login')
         
-def password_change(request):
-    if request.method == 'POST':
-        password = request.POST.get('password')
-        confirmpassword = request.POST.get('confirmpassword')
-        if password == confirmpassword:
-            user = User.objects.get(username = username)
-            user.set_password(password)
-            user.save()
-            messages.success(request, message='Password changed Successfully')
-            return redirect('/login')
-        else:
-            messages.error(request, message='Password did not match',extra_tags='danger')
-            return redirect('/password-change')
-    return render(request, 'change_password.html', context={'title':'Change Password'})
+def password_change(request, token):
+    if token == str(generated_token):
+        if request.method == 'POST':
+            password = request.POST.get('password')
+            confirmpassword = request.POST.get('confirmpassword')
+            if password == confirmpassword:
+                user = User.objects.get(username = username)
+                user.set_password(password)
+                user.save()
+                messages.success(request, message='Password changed Successfully')
+                return redirect('/login')
+            else:
+                messages.error(request, message='Password did not match',extra_tags='danger')
+                return HttpResponseRedirect(request.path_info)
+        return render(request, 'change_password.html', context={'title':'Change Password'})
+    else:
+        return redirect('/login')
