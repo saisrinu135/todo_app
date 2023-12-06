@@ -1,7 +1,36 @@
 {% extends 'base.html' %}
 {% block starts %}
-<div class="container-fluid card"
-    style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+
+<style>
+    .hero .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.hero {
+    background-color: #f0f0f0;
+    padding: 2em 0;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+</style>
+<section class="hero">
+    <div class="container">
+        <h2>Organize Your Tasks Effortlessly</h2>
+        <p>Join our community and manage your tasks with ease.</p>
+    </div>
+</section>
+
+<div class="container-fluid m-5">
     {% if messages %}
     {% for message in messages %}
     <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
@@ -10,7 +39,7 @@
     </div>
     {% endfor %}
     {% endif %}
-    <form class="col-6 mx-auto card p-4" method="post">
+    <form class="col-6 mx-auto p-4" method="post">
         {%csrf_token%}
 
         <div class="mb-sm-3">

@@ -43,7 +43,7 @@ def register_view(request):
             user.set_password(password)
             user.save()
             messages.success(request, message='You have registered successfully.')
-            return redirect('/login')
+            return redirect('/')
     return render(request,'register.html',context = {'title':"Register"})
 
 def login_view(request):
@@ -56,24 +56,24 @@ def login_view(request):
             user = authenticate(username = username, password = password)
             if user is None:
                 messages.error(request, message='Invalid Password',extra_tags='danger')
-                return redirect('/login')
+                return redirect('/')
             else:
                 login(request,user)
                 messages.success(request, message='Login Successfull')
                 return redirect('/home')
         else:
             messages.error(request, message= 'Invalid User', extra_tags='danger')
-            return redirect('/login')
+            return redirect('/')
 
     return render(request, 'login.html',context={'title':'Login'})
 
 def logout_view(request):
     logout(request)
     messages.success(request, message='Logout Successfull')
-    return redirect('/login')
+    return redirect('/')
 
 
-@login_required(login_url='/login')
+@login_required
 def home(request):
     tasks = tasks_model.objects.filter(user = request.user)
     if request.method == 'POST':
@@ -83,14 +83,14 @@ def home(request):
         userdata.save()
     return render(request, 'home.html',context={'title':'Todo - Home','tasks':tasks})
 
-@login_required(login_url='/login')
+@login_required
 def update_task(request, id):
     task = tasks_model.objects.get(id = id)
     task.completed = not task.completed
     task.save()
     return redirect('/home')
 
-@login_required(login_url='/login')
+@login_required
 def delete_task(request, id):
     task = tasks_model.objects.get(id = id)
     task.delete()
@@ -109,7 +109,7 @@ def forget_password(request):
             user = User.objects.get(username = username)
             send_mail(
                 subject='Password Reset',
-                message=f'''Your One Time Password to reset the your password {generated_otp}. Don't share it with any one.''', from_email=settings.EMAIL_HOST_USER, recipient_list=[user.email]
+                message=f'''Your One Time Password to reset the your password {generated_otp}. Don't share it with any one.''', from_email=settings.EMAIL_HOST_USER, recipient_list=[user.email],fail_silently=False
                 )
             global generated_token
             generated_token = uuid4()
@@ -133,7 +133,7 @@ def verify(request, token):
                 messages.error(request, message='OTP did not match',extra_tags='danger')
                 return HttpResponseRedirect(request.path_info)
         return render(request, 'verify.html',context={'title':'Verify OTP'})
-    return redirect('/login')
+    return redirect('/')
         
 def password_change(request, token):
     if token == str(generated_token):
@@ -145,10 +145,10 @@ def password_change(request, token):
                 user.set_password(password)
                 user.save()
                 messages.success(request, message='Password changed Successfully')
-                return redirect('/login')
+                return redirect('/')
             else:
                 messages.error(request, message='Password did not match',extra_tags='danger')
                 return HttpResponseRedirect(request.path_info)
         return render(request, 'change_password.html', context={'title':'Change Password'})
     else:
-        return redirect('/login')
+        return redirect('/')

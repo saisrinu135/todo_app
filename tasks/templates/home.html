@@ -1,4 +1,4 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
 
 {% block starts %}
 <div class="container card-body">
@@ -17,7 +17,7 @@
                 </div>
                 {% csrf_token %}
                 <label for="task" class="form-label mb-sm-3">Enter the task</label>
-                <input type="text" placeholder="Enter task here" name="task" id="task" class="form-control">
+                <input type="text" placeholder="Enter task here" name="task" id="task" class="form-control" required>
                 <button type="submit" class="btn btn-primary mt-3">Add Task</button></a>
             </form>
         </div>
