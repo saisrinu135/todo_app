@@ -2,7 +2,7 @@
 
 {% block starts %}
 <div class="container card-body">
-    <div class="container col-8 mx-auto">
+    <div class="container col-lg-6 mx-auto">
         <div class="form-group mt-5">
             <form action="" class="form-control mb-3 p-3" method="post">
                 <div class="message alert">
@@ -18,13 +18,13 @@
                 {% csrf_token %}
                 <label for="task" class="form-label mb-sm-3">Enter the task</label>
                 <input type="text" placeholder="Enter task here" name="task" id="task" class="form-control" required>
-                <button type="submit" class="btn btn-primary mt-3">Add Task</button></a>
+                <button type="submit" class="btn btn-primary mt-3 col-12">Add Task</button></a>
             </form>
         </div>
 
         {% if tasks %}
 
-        <div class="container col-8 mx-auto tasks p-5" style="transition: all 2s ease-in;">
+        <div class="container col-lg-6 mx-auto tasks p-5">
             <table cellpadding="15px" class="table table-hover">
                 <thead>
                     <tr>
