@@ -18,7 +18,7 @@ Welcome to the ToDo Application! This web application is designed to help you ma
 - Bootstrap: Enhancing aesthetics and responsiveness.
 
 ## Links
-   - Live link:  [To - Do App](saisrinu.pythonanywhere.com)
+   - Live link:  [To - Do App](https://saisrinu.pythonanywhere.com/)
 
 ## Getting Started
 
