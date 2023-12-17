@@ -24,7 +24,7 @@ Welcome to the ToDo Application! This web application is designed to help you ma
 
 1. **Clone the repository:**
    ```bash
-   git (clone https://github.com/saisrinu135/todo_app)
+   git clone https://github.com/saisrinu135/todo_app
 3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
